@@ -1,0 +1,8 @@
+target
+output
+
+*.bin
+*.elf
+*.hex
+
+.DS_Store

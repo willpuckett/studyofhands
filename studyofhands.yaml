@@ -1,0 +1,159 @@
+# ergogen --clean studyofhands.yaml
+
+meta:
+  engine: 4.1.0
+  name: studyofhands
+  version: 0.1
+  author: willpuckett
+  url: https://github.com/willpuckett/studyofhands
+
+presets:
+  # These presets provide different layout options
+  # Select a preset in the `units` section below
+  # Note: The appropriate switch footprint will still need to be set in the `pcb` section
+  choc_spaced:
+    capx: 17        # Key cap size horizontal
+    capy: 16        # Key cap size vertical
+    kx: 18.5        # Key spacing horizontal
+    ky: 17.5        # Key spacing vertical
+    pinky_splay:  8  # Degrees of splay between pinky and ring columns
+    pinky_adj: -46   # Adjustment to compensate for splay spacing
+    ring_splay: 1
+    ring_adj: -12
+    middle_splay: 0
+    middle_adj: 0
+    index_stagger: 0.8ky
+    index_splay: -6
+    index_adj: -26
+    thumb_offsetx: 0.25kx
+  
+  choc_min_spaced:
+    capx: 14.5
+    capy: 14.5
+    kx: 15.5
+    ky: 15.5
+    pinky_splay: 5
+    pinky_adj: -3
+    ring_splay: 3
+    ring_adj: -8
+    middle_splay: 3
+    middle_adj: -5
+    thumb_offsetx: 1/3kx
+
+  mx_spaced:
+    capx: 18
+    capy: 18
+    kx: 19
+    ky: 19
+    pinky_splay: 5
+    pinky_adj: -4
+    ring_splay: 3
+    ring_adj: -10
+    middle_splay: 0
+    middle_adj: 0
+    thumb_offsetx: 0.25kx
+  
+  mx_min_spaced:
+    capx: 15.5
+    capy: 15.5
+    kx: 16 + 0.5
+    ky: 16 + 0.5
+    pinky_splay: 5
+    pinky_adj: -3
+    ring_splay: 3
+    ring_adj: -8
+    middle_splay: 3
+    middle_adj: -5
+    thumb_offsetx: 1/3kx
+
+units:
+  $extends: presets.choc_spaced
+  angle: 22  # Angle between halves
+
+  # Defaults/Constants
+  # ====================
+  $default_height: 0  # Points invisible by default unless height/width explicitly set
+  $default_width: 0
+  xiao_x: 17.8
+  xiao_y: 21
+  sf: 16
+
+points:
+  zones.matrix:
+    anchor.shift: [100, -100]  # Fix placement on KiCAD sheet
+    # rotate: -angle + pinky_splay + ring_splay
+
+    key:
+      width: capx
+      height: capy
+      spread: kx      
+      padding: ky
+      autobind: 0
+    rows:
+      bottom:
+      home:
+      top:
+    columns.pinky:
+      rows:
+        bottom:
+          bind: [0.5ky, 0, 0, 0]
+        home:
+          bind: [0.5ky, 0, 0, 0]
+        top:
+          bind: [0, 0, 0, 0]
+  zones.thumb:
+    anchor:
+      ref: matrix_pinky_bottom
+      shift: [0, -28]
+    key.$extends: points.zones.matrix.key
+    columns:
+      tucky:
+outlines:
+    _key_outline:
+      - what: rectangle
+        bound: true
+        size: sf
+        where:
+          - /matrix_.*/
+          - /thumb_.*/
+    _panel:
+        # fillet: 0  # The index rounding where the glue meets the top center keys
+      - _key_outline
+    panel:
+      - name: _panel
+        fillet: 2
+    _switches:
+      - what: rectangle
+        size: 14
+        where:
+          - /matrix_.*/
+          - /thumb_.*/
+    _keycaps:
+      - what: rectangle
+        size: [capx, capy]
+        where:
+          - /matrix_.*/
+          - /thumb_.*/
+    _mcu:
+      - what: rectangle
+        where: mcu
+        size: [xiao_x, xiao_y]
+    demo_keycaps:
+      - panel
+      - ^_keycaps
+      - ^_mcu
+pcbs:
+  studyofhands:
+    outlines:
+      main:
+        outline: panel
+    footprints:
+      switches:
+        what: choc
+        where:
+          - /matrix_.*/
+          - /thumb_.*/
+        params:
+          from: GND
+          to: "{{name}}"
+  
