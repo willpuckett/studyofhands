@@ -7,7 +7,7 @@
 ## Instructions
 
 Print as many columns/thumbs as you plan to use in your board (col.stl & thumb.stl). 
-Poplate them with 6x3mm round magnets, switches, and keycaps. 
+Poplate them with 6x3mm round magnets, switches, and keycaps. If you find your switches aren't fitting well, it may be a good time to calibrate your [extra inner](https://www.youtube.com/watch?v=1O-Ho47rwLY) settings.
 
 ![rendering](.images/soh.png)
 
@@ -22,11 +22,13 @@ Move and rotate the svgs over the keys.
 
 ![placed](.images/placed.png)
 
+Draw a vertical line beside the pinky column and measure the angle between the two. Double this value for your angle between halves (for monoblocks).
+
 Measuring from the switch outline,
 
 ![usethese](.images/usethese.png)
 
-Start with the pinky column and use your cad package's measure tool to find the spread, stagger, and splay from one column to the next, inputting the numbers in your ergogen config.
+ Use your cad package's measure tool to find the spread, stagger, and splay from one column to the next, inputting the numbers in your ergogen config.
 
 ### Spread
 
